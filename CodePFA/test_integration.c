@@ -10,7 +10,7 @@
 
 double f(double x)
 {
-    return exp(3x);
+    return exp(3 * x);
 }
 
 int main()
