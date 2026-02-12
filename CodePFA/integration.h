@@ -41,6 +41,20 @@ extern double integrate(double (*f)(double), double a, double b, int N, QuadForm
    argument dx: we take N = |b-a|/dx (rounded to be an integer) */
 extern double integrate_dx(double (*f)(double), double a, double b, double dx, QuadFormula* qf);
 
+/* Personal functions */
+
+double leftMethod(double (*f)(double), double a, double b, int N, QuadFormula* qf);
+double rightMethod(double (*f)(double), double a, double b, int N, QuadFormula* qf);
+double middleMethod(double (*f)(double), double a, double b, int N, QuadFormula* qf);
+double trapezesMethod(double (*f)(double), double a, double b, int N, QuadFormula* qf);
+double simpsonMethod(double (*f)(double), double a, double b, int N, QuadFormula* qf);
+double gauss2Method(double (*f)(double), double a, double b, int N, QuadFormula* qf);
+double gauss3Method(double (*f)(double), double a, double b, int N, QuadFormula* qf);
+
+// Partitions [a,b] into N subdivisions [ai, bi].
+double *partition(double a, double b, int N);
+
+
 #endif /* INTEGRATION_C */
 
 #endif /* INTEGRATION_H */
