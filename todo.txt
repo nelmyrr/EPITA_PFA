@@ -1,0 +1,81 @@
+==== REQUIRED FUNCTIONS IN pfa.c ====
+
+
+-> double optionPrice(Option* option);
+
+option: a pointer to a structure, this structure defines the type Option 
+(using typedef). It contains all the parameters of an option.
+
+Returns the price of an option in euros.
+
+-> double clientCDF_S(InsuredClient* client, double x);
+
+client: a pointer to a structure which defines the type InsuredClient. 
+It contains all the parameters of a customer of an insurance company.
+
+Returns the value at x the cumulative distribution function of the random
+variable: 
+    S = "Sum of the reimbursements from the insurance company to this customer,
+    this year"
+
+
+-> bool init_integration(char* quadrature, double dt)
+
+quadrature: a character string, the name of the quadrature formula to be used. 
+Its possible values are "left", "right", "middle", "trapezes", "simpson", 
+"gauss2" or "gauss3".
+dt: a positive number specifying the subdivisions length.
+
+Returns true if everything happened well. 
+Otherwise, it returns false (for example, unknown quadrature formula, 
+or negative value of dt).
+
+
+-> double phi(double x);
+-> double PHI(double x); 
+See specifications PDF for both.
+
+
+==== REQUIRED FUNCTIONS IN integration.c ====
+
+
+-> bool setQuadFormula(QuadFormula* qf, char* name); 
+Affects the fields of qf to the values corresponding to the quadrature formula 
+specified by name.
+
+qf: a pointer to the object of type QuadFormula which will be updated.
+name: the name of the quadrature formula. Possible values are "left", "right", 
+"middle", "trapezes", "simpson", "gauss2" or "gauss3"
+
+Returns true  if everything happened well. Otherwise, it returns false 
+(e.g:if the name of the quadrature formula, given in argument name, is unknown).
+
+
+-> double integrate(double (*f)(double), double a, double b, int N, QuadFormula* qf);
+returns a numerical approximation of integral from a to b of f(t)dt.
+
+f: a function pointer, pointing to the function that will be integrated.
+a and b: bounds of the integration interval.
+N: number of subdivisions. The interval [a, b] is split in N subdivisions 
+[ai, bi], then the the quadrature formula is used to approximate the integral of 
+f sur on each subdivision.
+qf: the quadrature formula that will be used.
+
+Returns the numerical approximation of the integral.
+
+
+-> double integrate_dx(double (*f)(double), double a, double b, double dx, 
+                        QuadFormula* qf);
+
+f: a function pointer, pointing to the function that will be integrated.
+a and b: bounds of the integration interval
+dx: length of the subdivisions. The interval [a, b] is split in N subdivisions 
+[ai, bi]. N is computed such that the length of each subdivision, 
+(bi − ai) = (b − a)/N, is the closest as possible to dx (maybe not equal, 
+because N has to be an integer).
+qf: the quadrature formula that will be used.
+
+Returns the numerical approximation of the integral.
+
+
+
