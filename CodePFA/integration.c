@@ -8,7 +8,17 @@
 
 bool setQuadFormula(QuadFormula* qf, char* name)
 {
-  return true;
+    if(name && qf)
+    {
+        if(name == "left" || name == "right" || name == "middle" ||
+                name == "trapezes" || name == "simpson" || name == "gauss2"||
+                name == "gauss3")
+        {
+            qf->name = name;
+            return true;
+        }
+    }
+    return false;
 }
 
 /* This function is not required ,but it may useful to debug */
