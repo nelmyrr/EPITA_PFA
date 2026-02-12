@@ -43,13 +43,13 @@ extern double integrate_dx(double (*f)(double), double a, double b, double dx, Q
 
 /* Personal functions */
 
-double leftMethod(double (*f)(double), double a, double b, int N, QuadFormula* qf);
-double rightMethod(double (*f)(double), double a, double b, int N, QuadFormula* qf);
-double middleMethod(double (*f)(double), double a, double b, int N, QuadFormula* qf);
-double trapezesMethod(double (*f)(double), double a, double b, int N, QuadFormula* qf);
-double simpsonMethod(double (*f)(double), double a, double b, int N, QuadFormula* qf);
-double gauss2Method(double (*f)(double), double a, double b, int N, QuadFormula* qf);
-double gauss3Method(double (*f)(double), double a, double b, int N, QuadFormula* qf);
+double leftMethod(double (*f)(double), double a, double b, int N);
+double rightMethod(double (*f)(double), double a, double b, int N);
+double middleMethod(double (*f)(double), double a, double b, int N);
+double trapezesMethod(double (*f)(double), double a, double b, int N);
+double simpsonMethod(double (*f)(double), double a, double b, int N);
+double gauss2Method(double (*f)(double), double a, double b, int N);
+double gauss3Method(double (*f)(double), double a, double b, int N);
 
 // Partitions [a,b] into N subdivisions [ai, bi].
 double *partition(double a, double b, int N);
