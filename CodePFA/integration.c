@@ -1,7 +1,3 @@
-
-
-
-
 #define INTEGRATION_C
 
 #include "integration.h"
@@ -10,11 +6,16 @@ bool setQuadFormula(QuadFormula* qf, char* name)
 {
     if(name && qf)
     {
-        if(name == "left" || name == "right" || name == "middle" ||
-                name == "trapezes" || name == "simpson" || name == "gauss2"||
-                name == "gauss3")
+        if(!strcmp(name, "left") || !strcmp(name, "right") || !strcmp(name, "middle") ||
+                !strcmp(name, "trapezes") || !strcmp(name, "simpson") || !strcmp(name, "gauss2")||
+                !strcmp(name, "gauss3"))
         {
-            qf->name = name;
+            //qf->name = name; // this doesn't work, it's an array type left and a pointer type right
+            
+            for (int i = 0; i < 20 && *(name+i) != 0; i++)
+            {
+                *(qf->name + i) = *(name +i);
+            }
             return true;
         }
     }
@@ -23,13 +24,13 @@ bool setQuadFormula(QuadFormula* qf, char* name)
 
 double *partition(double a, double b, int N)
 {
-    double *arr = malloc(sizeof(double)*N*2); 
-    for(int i = 0; i < N*2; i+=2)
+    double *arr = malloc(sizeof(double)*(N+1)); 
+    for(int i = 0; i <= N; i++)
     {
-        *(arr+i) = a + i * ( (b-a)/N ); // ai
-        *(arr+i+1) = a + (i+1) * ( (b-a)/N ); // bi
+        *(arr+i) = a + i * ( (b-a)/N ); // a_(i) or b_(i-1)
     }
-    //a are on even indexes, b odd ones.
+    // Now, there is only N+1 elements, you'll need to use
+    // the same number as a and as b
     return arr;
 }
 
@@ -39,7 +40,7 @@ double leftMethod(double (*f)(double), double a, double b, int N)
     double *partition_array = partition(a,b,N);
     double res = 0;
     
-    for(double i = 0; i < N*2; i+=2)
+    for(int i = 0; i < N; i++)
     {
         res += (*f)(*(partition_array+i)) * (*(partition_array+i+1) - *(partition_array + i));
     }
@@ -55,9 +56,9 @@ double rightMethod(double (*f)(double), double a, double b, int N)
     double *partition_array = partition(a,b,N);
     double res = 0;
     
-    for(double i = 0; i < N*2; i+=2)
+    for(int i = 0; i < N; i++)
     {
-        res += (*f)(*(partition_array+i+1)) * (*(partition_array+i+1) - *(partition_array + i + 1));
+        res += (*f)(*(partition_array+i+1)) * (*(partition_array+i+1) - *(partition_array + i));
     }
     
     free(partition_array);
@@ -72,10 +73,10 @@ double middleMethod(double (*f)(double), double a, double b, int N)
     double res = 0;
     
     
-    for(double i = 0; i < N*2; i+=2)
+    for(int i = 0; i < N; i++)
     {
-        double mid = ( *(partition_array+i) + *(partition_array + i + 1) ) / 2;
-        res += (*f)(*(partition_array+i+1)) * (*(partition_array+i+1) - *(partition_array + i + 1));
+        double mid = ( *(partition_array+i) + *(partition_array + i+1) ) / 2;
+        res += (*f)(mid) * (*(partition_array+i+1) - *(partition_array+i));
     }
     
     free(partition_array);
@@ -89,11 +90,11 @@ double trapezesMethod(double (*f)(double), double a, double b, int N)
     double *partition_array = partition(a,b,N);
     double res = 0;
     
-    for(double i = 0; i < N*2; i+=2)
+    for(int i = 0; i < N; i++)
     {
-        double fact = 0.5 * ( (*f)(*(partition_array+ i ) + 
-                      0.5 * ( (*f)(*(partition_array+i+1));
-        res += fact * (*(partition_array+i+1) - *(partition_array + i + 1));
+        double fact = 0.5 * ( (*f)(*(partition_array+ i )))
+                    + 0.5 * ( (*f)(*(partition_array+i+1)));
+        res += fact * (*(partition_array+i+1) - *(partition_array + i));
     }
     
     free(partition_array);

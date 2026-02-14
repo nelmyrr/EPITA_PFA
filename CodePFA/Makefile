@@ -5,6 +5,9 @@ CFLAGS = -Wall -Wextra -lm
 
 all: integration pfa
 
+test: test_integration.c integration.c
+	$(CC) -o test_integration.o $^ -lm -g
+
 integration: test_integration.o integration.o
 	$(CC) -o test_integration $^ $(CFLAGS)
 
