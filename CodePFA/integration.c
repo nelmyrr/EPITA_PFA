@@ -35,6 +35,13 @@ double *partition(double a, double b, int N)
 }
 
 
+double linearInterpolation(double a, double b, double amount)
+{
+    double len = b - a;
+    return a + (len * amount);
+}
+
+
 double leftMethod(double (*f)(double), double a, double b, int N)
 {
     double *partition_array = partition(a,b,N);
@@ -101,8 +108,89 @@ double trapezesMethod(double (*f)(double), double a, double b, int N)
     return res;
 }
 
+// simpson
+double simpsonMethod(double (*f)(double), double a, double b, int N)
+{
+    double *partition_array = partition(a,b,N);
+    double res = 0;
+    
+    for(int i = 0; i < N; i++)
+    {
+        double mid = (*(partition_array+i) + *(partition_array+i+1))/2;
+        double fact = (double)(1)/(double)(6) * ( (*f)(*(partition_array+ i )) )
+                    + (double)(2)/(double)(3) * ( (*f)(mid) )
+                    + (double)(1)/(double)(6) * ( (*f)(*(partition_array+i+1)) );
+        res += fact * (*(partition_array+i+1) - *(partition_array + i));
+    }
+    
+    free(partition_array);
+    return res;
+}
 
 
+
+// gauss2
+double gaussTwoMethod(double (*f)(double), double a, double b, int N)
+{
+    double *partition_array = partition(a,b,N);
+    double res = 0;
+    
+    for(int i = 0; i < N; i++)
+    {
+        double plus_part = linearInterpolation(
+                    *(partition_array + i),
+                    *(partition_array+i+1),
+                    ( 1 - ( 1/(sqrt(3)) ) ) / 2
+                );
+        double minus_part = linearInterpolation(
+                    *(partition_array + i),
+                    *(partition_array+i+1),
+                    ( 1 + ( 1/(sqrt(3)) ) ) / 2
+                );
+
+        double fact = (0.5) * ( (*f)(plus_part) )
+                    + (0.5) * ( (*f)(minus_part) );
+        res += fact * (*(partition_array+i+1) - *(partition_array + i));
+    }
+    
+    free(partition_array);
+    return res;
+}
+
+
+// gauss3
+double gaussThreeMethod(double (*f)(double), double a, double b, int N)
+{
+    double *partition_array = partition(a,b,N);
+    double res = 0;
+    
+    for(int i = 0; i < N; i++)
+    {
+        double node1 = linearInterpolation(
+                    *(partition_array + i),
+                    *(partition_array+i+1),
+                    (0.5) * ( 1 - (sqrt( (double)(3)/(double)(5) )) )
+                );
+        double node2 = linearInterpolation(
+                    *(partition_array + i),
+                    *(partition_array+i+1),
+                    0.5
+                );
+        double node3 = linearInterpolation(
+                    *(partition_array + i),
+                    *(partition_array+i+1),
+                    (0.5) * ( 1 + (sqrt( (double)(3)/(double)(5) )) )
+                );
+
+        double fact = ((double)(5)/(double)(18)) * ( (*f)(node1) )
+                    + ((double)(4)/(double)(9)) * ( (*f)(node2) )
+                    + ((double)(5)/(double)(18)) * ( (*f)(node3) );
+        res += fact * (*(partition_array+i+1) - *(partition_array + i));
+    }
+    
+    free(partition_array);
+    return res;
+}
 
 
 

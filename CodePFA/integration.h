@@ -48,11 +48,12 @@ double rightMethod(double (*f)(double), double a, double b, int N);
 double middleMethod(double (*f)(double), double a, double b, int N);
 double trapezesMethod(double (*f)(double), double a, double b, int N);
 double simpsonMethod(double (*f)(double), double a, double b, int N);
-double gauss2Method(double (*f)(double), double a, double b, int N);
-double gauss3Method(double (*f)(double), double a, double b, int N);
+double gaussTwoMethod(double (*f)(double), double a, double b, int N);
+double gaussThreeMethod(double (*f)(double), double a, double b, int N);
 
 // Partitions [a,b] into N subdivisions [ai, bi].
 double *partition(double a, double b, int N);
+double linearInterpolation(double a, double b, double amount);
 
 
 #endif /* INTEGRATION_C */
