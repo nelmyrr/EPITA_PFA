@@ -124,3 +124,10 @@ double clientCDF_S(InsuredClient* client, double x)
 
 
 
+double price_call(Option *option)
+{
+    //FIXME: nelmyrr will fix this hopefully
+    double z0 = ( ln(option->K / option->S0) - (option->mu - ()))
+}
+
+

@@ -81,7 +81,9 @@ extern double clientCDF_S(InsuredClient* client, double x);
 
 
 // Personal functions
-
+double price_ST(double T);
+double price_call();
+double price_put();
 
 
 
