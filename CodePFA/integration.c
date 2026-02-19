@@ -214,12 +214,53 @@ void printQuadFormula(QuadFormula* qf)
 */
 double integrate(double (*f)(double), double a, double b, int N, QuadFormula* qf)
 {
-    return 0.0;
+    if(!strcmp(qf->name,"left"))
+        return leftMethod(&f, a, b, N);      
+    if(!strcmp(qf->name,"right"))
+        return rightMethod(&f, a, b, N);
+
+    if(!strcmp(qf->name,"middle"))
+        return middleMethod(&f, a, b, N);
+
+    if(!strcmp(qf->name,"trapezes"))
+        return trapezesMethod(&f, a, b, N);
+
+    if(!strcmp(qf->name,"simpson"))
+        return simpsonMethod(&f, a, b, N);
+
+    if(!strcmp(qf->name,"gauss2"))
+        return gaussTwoMethod(&f, a, b, N);
+
+    if(!strcmp(qf->name,"gauss3"))
+        return gaussThreeMethod(&f, a, b, N);
+
 }
 
 double integrate_dx(double (*f)(double), double a, double b, double dx, QuadFormula* qf)
 {
-    return 0.0;
+    int N = (int) round( abs(b-a)/dx );
+    if(N==0) //in case of a too small interval 
+        N = 1;
+
+    if(!strcmp(qf->name,"left"))
+        return leftMethod(&f, a, b, N);      
+    if(!strcmp(qf->name,"right"))
+        return rightMethod(&f, a, b, N);
+
+    if(!strcmp(qf->name,"middle"))
+        return middleMethod(&f, a, b, N);
+
+    if(!strcmp(qf->name,"trapezes"))
+        return trapezesMethod(&f, a, b, N);
+
+    if(!strcmp(qf->name,"simpson"))
+        return simpsonMethod(&f, a, b, N);
+
+    if(!strcmp(qf->name,"gauss2"))
+        return gaussTwoMethod(&f, a, b, N);
+
+    if(!strcmp(qf->name,"gauss3"))
+        return gaussThreeMethod(&f, a, b, N);
 }
 
 
