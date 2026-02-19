@@ -51,6 +51,15 @@ double simpsonMethod(double (*f)(double), double a, double b, int N);
 double gaussTwoMethod(double (*f)(double), double a, double b, int N);
 double gaussThreeMethod(double (*f)(double), double a, double b, int N);
 
+double leftMethodDx(double (*f)(double), double a, double b, double dx);
+double rightMethodDx(double (*f)(double), double a, double b, double dx);
+double middleMethodDx(double (*f)(double), double a, double b, double dx);
+double trapezesMethodDx(double (*f)(double), double a, double b, double dx);
+double simpsonMethodDx(double (*f)(double), double a, double b, double dx);
+double gaussTwoMethodDx(double (*f)(double), double a, double b, double dx);
+double gaussThreeMethodDx(double (*f)(double), double a, double b, double dx);
+
+
 // Partitions [a,b] into N subdivisions [ai, bi].
 double *partition(double a, double b, int N);
 double linearInterpolation(double a, double b, double amount);

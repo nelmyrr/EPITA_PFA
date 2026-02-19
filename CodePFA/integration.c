@@ -194,6 +194,13 @@ double gaussThreeMethod(double (*f)(double), double a, double b, int N)
 
 
 
+double leftMethodDx(double (*f)(double), double a, double b, double dx);
+double rightMethodDx(double (*f)(double), double a, double b, double dx);
+double middleMethodDx(double (*f)(double), double a, double b, double dx);
+double trapezesMethodDx(double (*f)(double), double a, double b, double dx);
+double simpsonMethodDx(double (*f)(double), double a, double b, double dx);
+double gaussTwoMethodDx(double (*f)(double), double a, double b, double dx);
+double gaussThreeMethod(double (*f)(double), double a, double b, double dx);
 
 
 
