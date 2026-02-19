@@ -17,6 +17,9 @@ bool setQuadFormula(QuadFormula* qf, char* name)
                 *(qf->name + i) = *(name +i);
             }
             return true;
+            
+            qf->client = NULL;
+            qf->x = 0.0;
         }
     }
     return false;

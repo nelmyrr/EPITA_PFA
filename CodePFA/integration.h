@@ -10,17 +10,24 @@
 #include <string.h>
 #include <stddef.h>
 
+
+
 #ifndef INTEGRATION_H
 #define INTEGRATION_H
+
+#include "pfa.h"
 
 /* Represents a quadrature formula.
    The function integrate takes an argument of type QuadFormula *.
    Have everything in this structure that will be needed by the function integrate.
 */
 typedef struct{
-  char name[20]; /* Name of the quadrature formula. */
+    char name[20]; /* Name of the quadrature formula. */
                  /* (possible value: "left", "right", "middle", "trapezes", "simpson", "gauss2" or "gauss3") */
   /* Add here other paramaters to the structure definition, that you may need for the integral function */
+
+    InsuredClient *client;
+    double x;
 
 } QuadFormula;
 

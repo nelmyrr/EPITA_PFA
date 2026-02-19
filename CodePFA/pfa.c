@@ -80,14 +80,16 @@ double clientCDF_X(InsuredClient* client, double x)
    two claims).
 */
 
-double f(InsuredClient* client, double t, double x)
+double f(double t)
 {
-    return clientPDF_X(client, t)* clientPDF_X(client, x-t)
+    return clientPDF_X(pfaQF.client, t)* clientPDF_X(pfaQF.client, pfaQF.x - t)
 }
 
 double clientPDF_X1X2(InsuredClient* client, double x)
 {
-    return 0.0;
+    pfaQF.client = client;
+    pfaQF.x = x;
+    return integrate_dx( &f, 0, x, pfa_dt, &pfaQF );
 }
 
 
@@ -97,7 +99,9 @@ double clientPDF_X1X2(InsuredClient* client, double x)
 */
 double clientCDF_X1X2(InsuredClient* client, double x)
 {
-  return 0.0;
+    pfaQF.client = client;
+    pfaQF.x = x;
+    return integrate_dx( &clientPDF_X1X2, 0, x, &pfaQF );
 }
 
 
@@ -107,7 +111,14 @@ double clientCDF_X1X2(InsuredClient* client, double x)
 */
 double clientCDF_S(InsuredClient* client, double x)
 {
-  return 0.0;
+    if (x < 0)
+        return 0.0;
+    if (x == 0)
+        return *(client->p + 0);
+
+    return *(client->p)
+            + *(client->p+1) * clientCDF_X(client, x)
+            + *(client->+2) * clientCDF_X1X2(client, x);
 }
 
 
