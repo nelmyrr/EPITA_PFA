@@ -49,6 +49,7 @@ double optionPrice(Option* option)
 
 
 
+
 /* ===============================================*/
 /* Insurance functions */
 
@@ -57,7 +58,9 @@ double optionPrice(Option* option)
 */
 double clientPDF_X(InsuredClient* client, double x)
 {
-  return 0.0;
+    if(x<=0)
+        return 0;
+    return (1 / ( client->s )) * phi( (log(x) - client->m) / client->s );
 }
 
 
@@ -66,7 +69,9 @@ double clientPDF_X(InsuredClient* client, double x)
 */
 double clientCDF_X(InsuredClient* client, double x)
 {
-  return 0.0;
+    if(x<=0)
+        return 0;
+    return PHI( (log(x) - client->m) / client->s );
 }
 
 
@@ -74,9 +79,15 @@ double clientCDF_X(InsuredClient* client, double x)
    X1 and X2 are the reimbursements of the two claims from the client (assuming there are 
    two claims).
 */
+
+double f(InsuredClient* client, double t, double x)
+{
+    return clientPDF_X(client, t)* clientPDF_X(client, x-t)
+}
+
 double clientPDF_X1X2(InsuredClient* client, double x)
 {
-  return 0.0;
+    return 0.0;
 }
 
 
