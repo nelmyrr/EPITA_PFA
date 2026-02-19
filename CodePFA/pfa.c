@@ -15,8 +15,12 @@
           The number of subdivisions will be N such that (b-a)/N ~ dt
 */
 bool init_integration(char* quadrature, double dt)
-{ 
-  return true;
+{
+    if(dt<0)
+        return false;
+    pfa_dt = dt;
+
+    return setQuadFormula(&pfaQF, quadrature);
 }
 
 
@@ -24,13 +28,15 @@ bool init_integration(char* quadrature, double dt)
 /* Density of the normal distribution */
 double phi(double x)
 {
-  return 0.398942280401433 * exp( -x*x/2 );
+    
+  //return 0.398942280401433 * exp( -x*x/2 );
+    return ( 1 / sqrt(2*pi) ) * exp( -x*x / 2 ); 
 }
 
 /* Cumulative distribution function of the normal distribution */
 double PHI(double x)
 {
-  return 0.0;
+  return 1/2 + integrate_dx( &phi, 0, x, pfa_dt, &pfaQF );
 }
 
 /* =====================================

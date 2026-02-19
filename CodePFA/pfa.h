@@ -76,6 +76,15 @@ extern double clientPDF_X1X2(InsuredClient* client, double x);
 extern double clientCDF_X1X2(InsuredClient* client, double x);
 extern double clientCDF_S(InsuredClient* client, double x);
 
+
+
+
+
+// Personal functions
+
+
+
+
 #endif // PFA_C
 
 #endif // PFA_H
