@@ -214,12 +214,12 @@ void printQuadFormula(QuadFormula* qf)
 */
 double integrate(double (*f)(double), double a, double b, int N, QuadFormula* qf)
 {
-  return 0.0;
+    return 0.0;
 }
 
 double integrate_dx(double (*f)(double), double a, double b, double dx, QuadFormula* qf)
 {
-  return 0.0;
+    return 0.0;
 }
 
 
