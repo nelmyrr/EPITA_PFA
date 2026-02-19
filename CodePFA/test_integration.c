@@ -66,13 +66,13 @@ int test(double (*f)(double), double from, double to, int precision, double exac
     double gtre   = gaussThreeMethod(f, from, to, precision);
 
 
-    printf("Precision: %d\n\tThe Right Method shows:       %f\t| Error Percentage: %.2f%%\n", precision, right, precPercent(right, exact));
-    printf("\tThe Left Method shows:        %f\t| Error Percentage: %.2f%%\n", left, precPercent(left, exact));
-    printf("\tThe Middle Method shows:      %f\t| Error Percentage: %.2f%% \n", middle, precPercent(middle, exact));
-    printf("\tThe Trapezoidal Method shows: %f\t| Error Percentage: %.2f%% \n", trap, precPercent(trap, exact));
-    printf("\tThe Simpson Method shows:     %f\t| Error Percentage: %.2f%% \n", simp, precPercent(simp, exact));
-    printf("\tThe Gauss2 Method shows:      %f\t| Error Percentage: %.2f%% \n", gtwo, precPercent(gtwo, exact));
-    printf("\tThe Gauss3 Method shows:      %f\t| Error Percentage: %.2f%% \n\n", gtre, precPercent(gtre, exact));
+    printf("Precision: %d\n\tThe Right Method shows:       %f\t| Error Percentage: %.10f%%\n", precision, right, precPercent(right, exact));
+    printf("\tThe Left Method shows:        %f\t| Error Percentage: %.10f%%\n", left, precPercent(left, exact));
+    printf("\tThe Middle Method shows:      %f\t| Error Percentage: %.10f%%\n", middle, precPercent(middle, exact));
+    printf("\tThe Trapezoidal Method shows: %f\t| Error Percentage: %.10f%%\n", trap, precPercent(trap, exact));
+    printf("\tThe Simpson Method shows:     %f\t| Error Percentage: %.10f%%\n", simp, precPercent(simp, exact));
+    printf("\tThe Gauss2 Method shows:      %f\t| Error Percentage: %.10f%%\n", gtwo, precPercent(gtwo, exact));
+    printf("\tThe Gauss3 Method shows:      %f\t| Error Percentage: %.10f%%\n\n", gtre, precPercent(gtre, exact));
 
     return 0;
 }
@@ -92,6 +92,7 @@ int main()
     test(&f, from, to, 100, exact);
     test(&f, from, to, 500, exact);
     test(&f, from, to, 1000, exact);
+    test(&f, from, to, 5000, exact);
 
     return 0;
 }
