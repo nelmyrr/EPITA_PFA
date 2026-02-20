@@ -218,24 +218,24 @@ void printQuadFormula(QuadFormula* qf)
 double integrate(double (*f)(double), double a, double b, int N, QuadFormula* qf)
 {
     if(!strcmp(qf->name,"left"))
-        return leftMethod(&f, a, b, N);      
+        return leftMethod(f, a, b, N);      
     if(!strcmp(qf->name,"right"))
-        return rightMethod(&f, a, b, N);
+        return rightMethod(f, a, b, N);
 
     if(!strcmp(qf->name,"middle"))
-        return middleMethod(&f, a, b, N);
+        return middleMethod(f, a, b, N);
 
     if(!strcmp(qf->name,"trapezes"))
-        return trapezesMethod(&f, a, b, N);
+        return trapezesMethod(f, a, b, N);
 
     if(!strcmp(qf->name,"simpson"))
-        return simpsonMethod(&f, a, b, N);
+        return simpsonMethod(f, a, b, N);
 
     if(!strcmp(qf->name,"gauss2"))
-        return gaussTwoMethod(&f, a, b, N);
+        return gaussTwoMethod(f, a, b, N);
 
     if(!strcmp(qf->name,"gauss3"))
-        return gaussThreeMethod(&f, a, b, N);
+        return gaussThreeMethod(f, a, b, N);
 
 }
 
@@ -246,24 +246,24 @@ double integrate_dx(double (*f)(double), double a, double b, double dx, QuadForm
         N = 1;
 
     if(!strcmp(qf->name,"left"))
-        return leftMethod(&f, a, b, N);      
+        return leftMethod(f, a, b, N);      
     if(!strcmp(qf->name,"right"))
-        return rightMethod(&f, a, b, N);
+        return rightMethod(f, a, b, N);
 
     if(!strcmp(qf->name,"middle"))
-        return middleMethod(&f, a, b, N);
+        return middleMethod(f, a, b, N);
 
     if(!strcmp(qf->name,"trapezes"))
-        return trapezesMethod(&f, a, b, N);
+        return trapezesMethod(f, a, b, N);
 
     if(!strcmp(qf->name,"simpson"))
-        return simpsonMethod(&f, a, b, N);
+        return simpsonMethod(f, a, b, N);
 
     if(!strcmp(qf->name,"gauss2"))
-        return gaussTwoMethod(&f, a, b, N);
+        return gaussTwoMethod(f, a, b, N);
 
     if(!strcmp(qf->name,"gauss3"))
-        return gaussThreeMethod(&f, a, b, N);
+        return gaussThreeMethod(f, a, b, N);
 }
 
 
