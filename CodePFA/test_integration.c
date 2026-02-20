@@ -83,8 +83,50 @@ int main()
     double to = log(2 * M_PI);
     double exact = -0.8414709848;
 
-    printf("The exact value is: %f\n", exact);
+    int N = 1000;
+    double dx = (to - from) / (double)(N);
+   
+    double wN = 0;
+    double wdx = 0;
 
+    QuadFormula qf;
+    setQuadFormula(&qf, "right");
+    wN = integrate(f, from, to, N, &qf);
+    wdx = integrate_dx(f, from, to, dx, &qf);
+    printf("Using N  = %f\nUsing dx = %f\n\n", wN, wdx);
+
+    setQuadFormula(&qf, "left");
+    wN = integrate(f, from, to, N, &qf);
+    wdx = integrate_dx(f, from, to, dx, &qf);
+    printf("Using N  = %f\nUsing dx = %f\n\n", wN, wdx);
+
+    setQuadFormula(&qf, "middle");
+    wN = integrate(f, from, to, N, &qf);
+    wdx = integrate_dx(f, from, to, dx, &qf);
+    printf("Using N  = %f\nUsing dx = %f\n\n", wN, wdx);
+
+    setQuadFormula(&qf, "trapezes");
+    wN = integrate(f, from, to, N, &qf);
+    wdx = integrate_dx(f, from, to, dx, &qf);
+    printf("Using N  = %f\nUsing dx = %f\n\n", wN, wdx);   
+
+    setQuadFormula(&qf, "simpson");
+    wN = integrate(f, from, to, N, &qf);
+    wdx = integrate_dx(f, from, to, dx, &qf);
+    printf("Using N  = %f\nUsing dx = %f\n\n", wN, wdx);  
+
+    setQuadFormula(&qf, "gauss2");
+    wN = integrate(f, from, to, N, &qf);
+    wdx = integrate_dx(f, from, to, dx, &qf);
+    printf("Using N  = %f\nUsing dx = %f\n\n", wN, wdx); 
+
+    setQuadFormula(&qf, "gauss3");
+    wN = integrate(f, from, to, N, &qf);
+    wdx = integrate_dx(f, from, to, dx, &qf);
+    printf("Using N  = %f\nUsing dx = %f\n\n", wN, wdx);
+
+    printf("The exact value is: %f\n", exact);
+/*
     test(&f, from, to, 2, exact);
     test(&f, from, to, 5, exact);
     test(&f, from, to, 10, exact);
@@ -93,6 +135,6 @@ int main()
     test(&f, from, to, 500, exact);
     test(&f, from, to, 1000, exact);
     test(&f, from, to, 5000, exact);
-
+*/
     return 0;
 }
