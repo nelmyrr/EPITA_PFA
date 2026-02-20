@@ -39,13 +39,37 @@ double PHI(double x)
   return 1/2 + integrate_dx( &phi, 0, x, pfa_dt, &pfaQF );
 }
 
+
 /* =====================================
    Finance function: price of an option 
 */
 double optionPrice(Option* option)
 {
-  return 0.0;
+    if(option->type == CALL)
+        return price_call(option);
+    return price_put(option);
 }
+
+
+double price_call(Option *option)
+{
+    double z0 = ( ln(option->K / option->S0) - (option->mu - ( pow(option->sig, 2) / 2))*option->T)
+                / ( option->sig * sqrt(option->T) );
+
+    return option->K * PHI(z0) - ( option->S0 * exp(option->mu * option->T) )
+                                 *PHI(z0 - option->mu * sqrt(option->T));
+}
+
+
+double price_put(Option * opt)
+{
+    double z0 = ( ln(option->K / option->S0) - (option->mu - ( pow(option->sig, 2) / 2))*option->T)
+                / ( option->sig * sqrt(option->T) );
+
+
+    return opt->K * PHI(z0) - S0 * exp(opt->mu * opt->T) * ( z0 - opt->mu * sqrt(opt->T));
+}
+
 
 
 
@@ -124,10 +148,5 @@ double clientCDF_S(InsuredClient* client, double x)
 
 
 
-double price_call(Option *option)
-{
-    //FIXME: nelmyrr will fix this hopefully
-    double z0 = ( ln(option->K / option->S0) - (option->mu - ()))
-}
 
 
