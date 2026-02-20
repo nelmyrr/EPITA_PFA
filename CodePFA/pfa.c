@@ -43,14 +43,6 @@ double PHI(double x)
 /* =====================================
    Finance function: price of an option 
 */
-double optionPrice(Option* option)
-{
-    if(option->type == CALL)
-        return price_call(option);
-    return price_put(option);
-}
-
-
 double price_call(Option *option)
 {
     double z0 = ( ln(option->K / option->S0) - (option->mu - ( pow(option->sig, 2) / 2))*option->T)
@@ -69,6 +61,14 @@ double price_put(Option * opt)
 
     return opt->K * PHI(z0) - S0 * exp(opt->mu * opt->T) * ( z0 - opt->mu * sqrt(opt->T));
 }
+
+double optionPrice(Option* option)
+{
+    if(option->type == CALL)
+        return price_call(option);
+    return price_put(option);
+}
+
 
 
 
