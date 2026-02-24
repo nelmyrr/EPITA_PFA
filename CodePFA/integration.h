@@ -3,17 +3,16 @@
 /* Creation date: 31 July, 2025      */                                    
 /*************************************/
 
+
+
+#ifndef INTEGRATION_H
+#define INTEGRATION_H
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
 #include <stddef.h>
-
-
-
-#ifndef INTEGRATION_H
-#define INTEGRATION_H
 
 #include "pfa.h"
 

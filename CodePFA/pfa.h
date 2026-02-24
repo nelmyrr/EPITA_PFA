@@ -3,6 +3,10 @@
 /* Creation date: 31 July, 2025      */                                    
 /*************************************/
 
+
+#ifndef PFA_H
+#define PFA_H
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdio.h>
@@ -13,8 +17,9 @@
 
 #include "integration.h"
 
-#ifndef PFA_H
-#define PFA_H
+
+
+
 
 typedef enum {CALL=0, PUT} OptionType;
 
@@ -44,6 +49,7 @@ typedef struct{
 } InsuredClient;
 
 #ifdef PFA_C
+
 
 /* Global variables (only visible in pfa.c) for the integration computations */
 QuadFormula pfaQF;

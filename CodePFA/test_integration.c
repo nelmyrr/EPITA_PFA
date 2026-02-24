@@ -79,7 +79,7 @@ int test(double (*f)(double), double from, double to, int precision, double exac
 
 int main()
 {
-    double from = 0;
+/*    double from = 0;
     double to = log(2 * M_PI);
     double exact = -0.8414709848;
 
@@ -91,42 +91,42 @@ int main()
 
     QuadFormula qf;
     setQuadFormula(&qf, "right");
-    wN = integrate(f, from, to, N, &qf);
-    wdx = integrate_dx(f, from, to, dx, &qf);
+    wN = integrate(&f, from, to, N, &qf);
+    wdx = integrate_dx(&f, from, to, dx, &qf);
     printf("Using N  = %f\nUsing dx = %f\n\n", wN, wdx);
 
     setQuadFormula(&qf, "left");
-    wN = integrate(f, from, to, N, &qf);
-    wdx = integrate_dx(f, from, to, dx, &qf);
+    wN = integrate(&f, from, to, N, &qf);
+    wdx = integrate_dx(&f, from, to, dx, &qf);
     printf("Using N  = %f\nUsing dx = %f\n\n", wN, wdx);
 
     setQuadFormula(&qf, "middle");
-    wN = integrate(f, from, to, N, &qf);
-    wdx = integrate_dx(f, from, to, dx, &qf);
+    wN = integrate(&f, from, to, N, &qf);
+    wdx = integrate_dx(&f, from, to, dx, &qf);
     printf("Using N  = %f\nUsing dx = %f\n\n", wN, wdx);
 
     setQuadFormula(&qf, "trapezes");
-    wN = integrate(f, from, to, N, &qf);
-    wdx = integrate_dx(f, from, to, dx, &qf);
+    wN = integrate(&f, from, to, N, &qf);
+    wdx = integrate_dx(&f, from, to, dx, &qf);
     printf("Using N  = %f\nUsing dx = %f\n\n", wN, wdx);   
 
     setQuadFormula(&qf, "simpson");
-    wN = integrate(f, from, to, N, &qf);
-    wdx = integrate_dx(f, from, to, dx, &qf);
+    wN = integrate(&f, from, to, N, &qf);
+    wdx = integrate_dx(&f, from, to, dx, &qf);
     printf("Using N  = %f\nUsing dx = %f\n\n", wN, wdx);  
 
     setQuadFormula(&qf, "gauss2");
-    wN = integrate(f, from, to, N, &qf);
-    wdx = integrate_dx(f, from, to, dx, &qf);
+    wN = integrate(&f, from, to, N, &qf);
+    wdx = integrate_dx(&f, from, to, dx, &qf);
     printf("Using N  = %f\nUsing dx = %f\n\n", wN, wdx); 
 
     setQuadFormula(&qf, "gauss3");
-    wN = integrate(f, from, to, N, &qf);
-    wdx = integrate_dx(f, from, to, dx, &qf);
+    wN = integrate(&f, from, to, N, &qf);
+    wdx = integrate_dx(&f, from, to, dx, &qf);
     printf("Using N  = %f\nUsing dx = %f\n\n", wN, wdx);
 
     printf("The exact value is: %f\n", exact);
-/*
+*//*
     test(&f, from, to, 2, exact);
     test(&f, from, to, 5, exact);
     test(&f, from, to, 10, exact);

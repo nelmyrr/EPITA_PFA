@@ -5,6 +5,7 @@
 #define PFA_C
 
 #include "pfa.h"
+#include "math.h"
 
 /* Initialize the integration variables.
    Arguments :
@@ -30,7 +31,7 @@ double phi(double x)
 {
     
   //return 0.398942280401433 * exp( -x*x/2 );
-    return ( 1 / sqrt(2*pi) ) * exp( -x*x / 2 ); 
+    return ( 1 / sqrt(2*M_PI) ) * exp( -x*x / 2 ); 
 }
 
 /* Cumulative distribution function of the normal distribution */
@@ -45,21 +46,18 @@ double PHI(double x)
 */
 double price_call(Option *option)
 {
-    double z0 = ( ln(option->K / option->S0) - (option->mu - ( pow(option->sig, 2) / 2))*option->T)
-                / ( option->sig * sqrt(option->T) );
+    double z0 = ( log(option->K / option->S0) - (option->mu - ( pow(option->sig, 2) / 2))*option->T) / ( option->sig * sqrt(option->T) );
 
-    return option->K * PHI(z0) - ( option->S0 * exp(option->mu * option->T) )
-                                 *PHI(z0 - option->mu * sqrt(option->T));
+    return option->K * PHI(z0) - ( option->S0 * exp(option->mu * option->T) ) * PHI(z0 - option->mu * sqrt(option->T));
 }
 
 
-double price_put(Option * opt)
+double price_put(Option * option)
 {
-    double z0 = ( ln(option->K / option->S0) - (option->mu - ( pow(option->sig, 2) / 2))*option->T)
-                / ( option->sig * sqrt(option->T) );
+    double z0 = ( log(option->K / option->S0) - (option->mu - ( pow(option->sig, 2) / 2))*option->T) / ( option->sig * sqrt(option->T) );
 
 
-    return opt->K * PHI(z0) - S0 * exp(opt->mu * opt->T) * ( z0 - opt->mu * sqrt(opt->T));
+    return option->K * PHI(z0) - option->S0 * exp(option->mu * option->T) * ( z0 - option->mu * sqrt(option->T));
 }
 
 double optionPrice(Option* option)
@@ -106,7 +104,7 @@ double clientCDF_X(InsuredClient* client, double x)
 
 double f(double t)
 {
-    return clientPDF_X(pfaQF.client, t)* clientPDF_X(pfaQF.client, pfaQF.x - t)
+    return clientPDF_X(pfaQF.client, t)* clientPDF_X(pfaQF.client, pfaQF.x - t);
 }
 
 double clientPDF_X1X2(InsuredClient* client, double x)
@@ -116,6 +114,10 @@ double clientPDF_X1X2(InsuredClient* client, double x)
     return integrate_dx( &f, 0, x, pfa_dt, &pfaQF );
 }
 
+double clientPDF_X1X2_self(double x)
+{
+    return integrate_dx( &f, 0, x, pfa_dt, &pfaQF );
+}
 
 /* Cumulative distribution function (CDF) of variable X1+X2.
    X1 and X2 are the reimbursements of the two claims from the client (assuming there are 
@@ -125,7 +127,7 @@ double clientCDF_X1X2(InsuredClient* client, double x)
 {
     pfaQF.client = client;
     pfaQF.x = x;
-    return integrate_dx( &clientPDF_X1X2, 0, x, &pfaQF );
+    return integrate_dx( &clientPDF_X1X2_self, 0, x, pfa_dt, &pfaQF );
 }
 
 
@@ -142,7 +144,7 @@ double clientCDF_S(InsuredClient* client, double x)
 
     return *(client->p)
             + *(client->p+1) * clientCDF_X(client, x)
-            + *(client->+2) * clientCDF_X1X2(client, x);
+            + *(client->p+2) * clientCDF_X1X2(client, x);
 }
 
 

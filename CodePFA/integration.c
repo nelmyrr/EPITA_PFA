@@ -12,14 +12,21 @@ bool setQuadFormula(QuadFormula* qf, char* name)
         {
             //qf->name = name; // this doesn't work, it's an array type left and a pointer type right
             
-            for (int i = 0; i < 20 && *(name+i) != 0; i++)
+            int i = 0;
+            for (i = 0; i < 19 && *(name+i) != 0; i++)
             {
                 *(qf->name + i) = *(name +i);
             }
-            return true;
-            
+            for (i = i; i < 20; i++)
+            {
+                *(qf->name +i) = 0;
+            }
+            //return true; // You are returning before doing the whole work? ;-;
+
             qf->client = NULL;
             qf->x = 0.0;
+
+            return true; // Now it's "normal" to return...
         }
     }
     return false;
@@ -218,7 +225,8 @@ void printQuadFormula(QuadFormula* qf)
 double integrate(double (*f)(double), double a, double b, int N, QuadFormula* qf)
 {
     if(!strcmp(qf->name,"left"))
-        return leftMethod(f, a, b, N);      
+        return leftMethod(f, a, b, N);
+
     if(!strcmp(qf->name,"right"))
         return rightMethod(f, a, b, N);
 
@@ -241,12 +249,16 @@ double integrate(double (*f)(double), double a, double b, int N, QuadFormula* qf
 
 double integrate_dx(double (*f)(double), double a, double b, double dx, QuadFormula* qf)
 {
-    int N = (int) round( abs(b-a)/dx );
+    double numerator = b - a;
+    if (numerator < 0)
+        numerator *= -1;
+    int N = (int)(numerator / dx);
     if(N==0) //in case of a too small interval 
         N = 1;
 
     if(!strcmp(qf->name,"left"))
-        return leftMethod(f, a, b, N);      
+        return leftMethod(f, a, b, N);
+
     if(!strcmp(qf->name,"right"))
         return rightMethod(f, a, b, N);
 
