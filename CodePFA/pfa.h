@@ -15,7 +15,6 @@
 #include <string.h>
 #include <stddef.h>
 
-#include "integration.h"
 
 
 
@@ -47,6 +46,10 @@ typedef struct{
      0, 1 or 2 claims during the year. */
   double* p;
 } InsuredClient;
+
+
+// Including it after the definition will maybe solve the problem
+#include "integration.h"
 
 #ifdef PFA_C
 

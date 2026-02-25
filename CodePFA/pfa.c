@@ -37,7 +37,7 @@ double phi(double x)
 /* Cumulative distribution function of the normal distribution */
 double PHI(double x)
 {
-  return 1/2 + integrate_dx( &phi, 0, x, pfa_dt, &pfaQF );
+  return ((double)(1))/((double)(2)) + integrate_dx( &phi, 0, x, pfa_dt, &pfaQF );
 }
 
 
@@ -54,7 +54,7 @@ double price_call(Option *option)
 
 double price_put(Option * option)
 {
-    double z0 = ( log(option->K / option->S0) - (option->mu - ( pow(option->sig, 2) / 2))*option->T) / ( option->sig * sqrt(option->T) );
+    double z0 = ( log(option->K / option->S0) - (option->mu - ( pow(option->sig, 2) / (double)(2)))*option->T) / ( option->sig * sqrt(option->T) );
 
 
     return option->K * PHI(z0) - option->S0 * exp(option->mu * option->T) * ( z0 - option->mu * sqrt(option->T));
@@ -82,7 +82,7 @@ double clientPDF_X(InsuredClient* client, double x)
 {
     if(x<=0)
         return 0;
-    return (1 / ( client->s )) * phi( (log(x) - client->m) / client->s );
+    return ((double)(1) / ( client->s )) * phi( (log(x) - client->m) / client->s );
 }
 
 
@@ -142,13 +142,6 @@ double clientCDF_S(InsuredClient* client, double x)
     if (x == 0)
         return *(client->p + 0);
 
-    return *(client->p)
-            + *(client->p+1) * clientCDF_X(client, x)
-            + *(client->p+2) * clientCDF_X1X2(client, x);
+    return *(client->p) + *(client->p+1) * clientCDF_X(client, x) + *(client->p+2) * clientCDF_X1X2(client, x);
 }
-
-
-
-
-
 
