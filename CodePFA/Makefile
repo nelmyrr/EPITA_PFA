@@ -3,8 +3,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -lm
 
-all: integration pfa
-
 test: test_pfa.c integration.c pfa.c
 	$(CC) -o test $^ -lm -g
 

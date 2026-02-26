@@ -1,0 +1,25 @@
+Test values for part II, III:
+    Put / Call
+        S_0 = 100
+        T = 2
+        mu = 0.05
+        sigma = 0.02
+    Call with K = 100, C ~ 10.5172
+    Put with K = 115, P ~ 4.59834
+
+    For your report:
+        Build tables/graphs by letting K vary (or fixing K and letting T vary)
+
+Insurance:
+    m = s = 1
+    p_0 = 0.9
+    p_1 = p_2 = 0.05
+    At x = 1:
+        PDF_X1X2 (1) ~ 0.0196
+        CDF_X1X2 (1) ~ 0.0049
+
+        CDF_S (1) ~ 0.9082
+
+    For your report:
+        Let x vary. You can also change the other parameters.
+
