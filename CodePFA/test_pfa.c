@@ -15,7 +15,7 @@ int main()
 
     // ######### Put Your Tests Here #########
 
-    /*Option option = {
+/*    Option option = {
         PUT,
         100.0,
         115.0,
@@ -24,48 +24,45 @@ int main()
         0.02
     };
 
-    double put_price = optionPrice(&option);
+    double Ks[10] = {115, 130, 155, 175, 195, 210, 225};
 
-    printf("Put price: %.5f\n", put_price);*/
+    for (int i = 0; i < 7; i++)
+    {
+        option.K = *(Ks + i);
+        double price = optionPrice(&option);
+        printf("Put price with K = %3f: %.5f\n", option.K, price);
+    }
+*/
 
-    /*double phi1 = PHI(-1);
+/*    double phi1 = PHI(-1);
     double phi2 = PHI(1);
     printf("######### PHI Testing #########\n\tPHI(-1) = %.4f\n\tPHI(1) = %.4f\n", phi1, phi2);
 */
-    double *array = malloc(sizeof(double) * 3);
+/*    double *array = malloc(sizeof(double) * 3);
     *array = 0.9;
     *(array+1) = 0.05;
     *(array+2) = 0.05;
 
-    double *array2 = malloc(sizeof(double) * 3);
-    *array2 = 0.9;
-    *(array2+1) = 0.05;
-    *(array2+2) = 0.05;
-
-    InsuredClient client2 = {
+    InsuredClient client = {
         1,
         1,
         array
     };
 
-    InsuredClient client = {
-        1,
-        1,
-        array2
-    };
-
     double x = 1;
 
-    double pdfX1X2 = clientPDF_X1X2(&client, x);
-    double cdfX1X2 = clientCDF_X1X2(&client2, x);
+    for (x = 0; x < 11; x++)
+    {
+        double pdfX1X2 = clientPDF_X1X2(&client, x);
+        double cdfX1X2 = clientCDF_X1X2(&client, x);
 
-    double cdfS = clientCDF_S(&client, x);
+        double cdfS = clientCDF_S(&client, x);
 
-    printf("######### Results #########\n     PDF X1X2 = %.4f\n     CDF X1X2 = %.4f\n     CDF S    = %.4f\n", pdfX1X2, cdfX1X2, cdfS);
+        printf("######### Results x = %.0f #########\n     PDF X1X2 = %.4f\n     CDF X1X2 = %.4f\n     CDF S    = %.4f\n", x, pdfX1X2, cdfX1X2, cdfS);
+    }
 
     free(array);
-    free(array2);
-
+*/
     return 0;
 }
 
