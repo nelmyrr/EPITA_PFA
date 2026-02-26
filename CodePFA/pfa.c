@@ -48,7 +48,7 @@ double price_call(Option *option)
 {
     double z0 = ( log(option->K / option->S0) - (option->mu - ( pow(option->sig, 2) / 2))*option->T) / ( option->sig * sqrt(option->T) );
 
-    return option->K * PHI(z0) - ( option->S0 * exp(option->mu * option->T) ) * PHI(z0 - option->mu * sqrt(option->T));
+    return -1 * option->K * PHI(-z0) + ( option->S0 * exp(option->mu * option->T) ) * PHI(-z0 + option->sig * sqrt(option->T));
 }
 
 
@@ -57,7 +57,7 @@ double price_put(Option * option)
     double z0 = ( log(option->K / option->S0) - (option->mu - ( pow(option->sig, 2) / (double)(2)))*option->T) / ( option->sig * sqrt(option->T) );
 
 
-    return option->K * PHI(z0) - option->S0 * exp(option->mu * option->T) * ( z0 - option->mu * sqrt(option->T));
+    return option->K * PHI(z0) - option->S0 * exp(option->mu * option->T) * PHI( z0 - option->sig * sqrt(option->T));
 }
 
 double optionPrice(Option* option)
@@ -82,7 +82,7 @@ double clientPDF_X(InsuredClient* client, double x)
 {
     if(x<=0)
         return 0;
-    return ((double)(1) / ( client->s )) * phi( (log(x) - client->m) / client->s );
+    return ((double)(1) / ( client->s * x )) * phi( (log(x) - client->m) / client->s );
 }
 
 
@@ -127,6 +127,13 @@ double clientCDF_X1X2(InsuredClient* client, double x)
 {
     pfaQF.client = client;
     pfaQF.x = x;
+    
+    double pdfX1X2 = clientPDF_X1X2(client, x);
+    double pdfX1X2_self = clientPDF_X1X2_self(x);
+
+
+    printf("Diff %f\nSelf %f\n",pdfX1X2, pdfX1X2_self);
+
     return integrate_dx( &clientPDF_X1X2_self, 0, x, pfa_dt, &pfaQF );
 }
 

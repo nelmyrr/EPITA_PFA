@@ -224,6 +224,9 @@ void printQuadFormula(QuadFormula* qf)
 */
 double integrate(double (*f)(double), double a, double b, int N, QuadFormula* qf)
 {
+    if (b-a < 0)
+        return -1 * integrate(f, b, a, N, qf);
+
     if(!strcmp(qf->name,"left"))
         return leftMethod(f, a, b, N);
 
