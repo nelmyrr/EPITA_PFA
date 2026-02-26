@@ -38,7 +38,7 @@ int main()
     double phi2 = PHI(1);
     printf("######### PHI Testing #########\n\tPHI(-1) = %.4f\n\tPHI(1) = %.4f\n", phi1, phi2);
 */
-/*    double *array = malloc(sizeof(double) * 3);
+    double *array = malloc(sizeof(double) * 3);
     *array = 0.9;
     *(array+1) = 0.05;
     *(array+2) = 0.05;
@@ -62,7 +62,7 @@ int main()
     }
 
     free(array);
-*/
+
     return 0;
 }
 
