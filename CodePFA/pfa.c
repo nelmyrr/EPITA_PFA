@@ -116,6 +116,7 @@ double clientPDF_X1X2(InsuredClient* client, double x)
 
 double clientPDF_X1X2_self(double x)
 {
+    pfaQF.x = x; // This line killed me...
     return integrate_dx( &f, 0, x, pfa_dt, &pfaQF );
 }
 
@@ -127,12 +128,6 @@ double clientCDF_X1X2(InsuredClient* client, double x)
 {
     pfaQF.client = client;
     pfaQF.x = x;
-    
-    double pdfX1X2 = clientPDF_X1X2(client, x);
-    double pdfX1X2_self = clientPDF_X1X2_self(x);
-
-
-    printf("Diff %f\nSelf %f\n",pdfX1X2, pdfX1X2_self);
 
     return integrate_dx( &clientPDF_X1X2_self, 0, x, pfa_dt, &pfaQF );
 }
