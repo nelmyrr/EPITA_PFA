@@ -15,7 +15,7 @@ int main()
 
     // ######### Put Your Tests Here #########
 
-/*    Option option = {
+    Option option = {
         PUT,
         100.0,
         115.0,
@@ -24,15 +24,29 @@ int main()
         0.02
     };
 
-    double Ks[10] = {115, 130, 155, 175, 195, 210, 225};
+    printf("######### optionPrice #########\nS_0 = %.2f\nT = %.2f\nmu = %.2f\nsigma = %.2f\n", option.S0, option.T, option.mu, option.sig);
 
-    for (int i = 0; i < 7; i++)
+    double Ks[10] = {115, 130, 155};
+
+    for (int i = 0; i < 3; i++)
     {
         option.K = *(Ks + i);
         double price = optionPrice(&option);
-        printf("Put price with K = %3f: %.5f\n", option.K, price);
+        printf("Put  price with K = %3.0f: %.5f\n", option.K, price);
     }
-*/
+
+    option.type = CALL;
+    *(Ks+0) = 15;
+    *(Ks+1) = 50;
+    *(Ks+2) = 100;
+
+    for (int i = 0; i < 3; i++)
+    {
+        option.K = *(Ks + i);
+        double price = optionPrice(&option);
+        printf("Call price with K = %.0f: %.5f\n", option.K, price);
+    }
+
 
 /*    double phi1 = PHI(-1);
     double phi2 = PHI(1);
@@ -49,9 +63,19 @@ int main()
         array
     };
 
+
+/*
+
+    m = s = 1
+ 15     p_0 = 0.9
+ 16     p_1 = p_2 = 0.05
+
+*/
+    printf("\n######### Insurance Tests #########\nm = s = 1\np_0 = 0.9\np_1 = p_2 = 0.05\n");
+
     double x = 1;
 
-    for (x = 0; x < 11; x++)
+    for (x = 1; x < 11; x++)
     {
         double pdfX1X2 = clientPDF_X1X2(&client, x);
         double cdfX1X2 = clientCDF_X1X2(&client, x);
