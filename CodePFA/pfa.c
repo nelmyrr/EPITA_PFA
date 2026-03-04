@@ -30,14 +30,14 @@ bool init_integration(char* quadrature, double dt)
 double phi(double x)
 {
     
-  //return 0.398942280401433 * exp( -x*x/2 );
-    return ( 1 / sqrt(2*M_PI) ) * exp( -x*x / 2 ); 
+    return 0.398942280401433 * exp( -x*x/2 );
+    //return ( 1 / sqrt(2*M_PI) ) * exp( -x*x / 2 ); 
 }
 
 /* Cumulative distribution function of the normal distribution */
 double PHI(double x)
 {
-  return ((double)(1))/((double)(2)) + integrate_dx( &phi, 0, x, pfa_dt, &pfaQF );
+  return 0.5 + integrate_dx( &phi, 0, x, pfa_dt, &pfaQF );
 }
 
 
@@ -46,18 +46,22 @@ double PHI(double x)
 */
 double price_call(Option *option)
 {
-    double z0 = ( log(option->K / option->S0) - (option->mu - ( pow(option->sig, 2) / 2))*option->T) / ( option->sig * sqrt(option->T) );
+    double sqrtT = sqrt(option->T);
 
-    return -1 * option->K * PHI(-z0) + ( option->S0 * exp(option->mu * option->T) ) * PHI(-z0 + option->sig * sqrt(option->T));
+    double z0 = ( log(option->K / option->S0) - (option->mu - ( (option->sig * option->sig) / 2.0))*option->T) / ( option->sig * sqrtT );
+
+    return -1.0 * option->K * PHI(-z0) + ( option->S0 * exp(option->mu * option->T) ) * PHI(-z0 + option->sig * sqrtT);
 }
 
 
 double price_put(Option * option)
 {
-    double z0 = ( log(option->K / option->S0) - (option->mu - ( pow(option->sig, 2) / (double)(2)))*option->T) / ( option->sig * sqrt(option->T) );
+    double sqrtT = sqrt(option->T);
+
+    double z0 = ( log(option->K / option->S0) - (option->mu - ( (option->sig * option->sig) / 2.0))*option->T) / ( option->sig * sqrtT );
 
 
-    return option->K * PHI(z0) - option->S0 * exp(option->mu * option->T) * PHI( z0 - option->sig * sqrt(option->T));
+    return option->K * PHI(z0) - option->S0 * exp(option->mu * option->T) * PHI( z0 - option->sig * sqrtT);
 }
 
 double optionPrice(Option* option)

@@ -28,6 +28,9 @@ pfa.o: pfa.c pfa.h integration.h
 
 # .PHONY: clean
 
+cleantest:
+	rm -f test
+
 clean:
 	$(RM) $(PROG) $(OBJ)
 

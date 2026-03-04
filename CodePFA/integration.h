@@ -28,6 +28,10 @@ typedef struct{
     InsuredClient *client;
     double x;
 
+    // Optimization variables
+    double nodes[3];
+    double weights[3];
+
 } QuadFormula;
 
 #ifdef INTEGRATION_C
@@ -53,13 +57,9 @@ double leftMethod(double (*f)(double), double a, double b, int N);
 double rightMethod(double (*f)(double), double a, double b, int N);
 double middleMethod(double (*f)(double), double a, double b, int N);
 double trapezesMethod(double (*f)(double), double a, double b, int N);
-double simpsonMethod(double (*f)(double), double a, double b, int N);
-double gaussTwoMethod(double (*f)(double), double a, double b, int N);
-double gaussThreeMethod(double (*f)(double), double a, double b, int N);
-
-// Partitions [a,b] into N subdivisions [ai, bi].
-double *partition(double a, double b, int N);
-double linearInterpolation(double a, double b, double amount);
+double simpsonMethod(double (*f)(double), double a, double b, int N, QuadFormula* qf);
+double gaussTwoMethod(double (*f)(double), double a, double b, int N, QuadFormula* qf);
+double gaussThreeMethod(double (*f)(double), double a, double b, int N, QuadFormula* qf);
 
 
 #endif /* INTEGRATION_C */

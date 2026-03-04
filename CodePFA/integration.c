@@ -26,43 +26,51 @@ bool setQuadFormula(QuadFormula* qf, char* name)
             qf->client = NULL;
             qf->x = 0.0;
 
+            if (!strcmp(name, "simpson"))
+            {
+                qf->weights[0] = 1.0 / 6.0;
+                qf->weights[1] = 2.0 / 3.0;
+                qf->weights[2] = 1.0 / 6.0;
+            }
+            else if (!strcmp(name, "gauss2"))
+            {
+                qf->nodes[0] = ( 1.0 - ( 1.0 / sqrt(3.0) ) ) / 2.0;
+                qf->nodes[1] = ( 1.0 + ( 1.0 / sqrt(3.0) ) ) / 2.0;
+
+                qf->weights[0] = 0.5;
+                qf->weights[1] = 0.5;
+            }
+            else if (!strcmp(name, "gauss3"))
+            {
+                qf->nodes[0] = ( 1.0 - sqrt(3.0 / 5.0) ) / 2.0;
+                qf->nodes[1] = 0.5;
+                qf->nodes[2] = ( 1.0 + sqrt(3.0 / 5.0) ) / 2.0;
+
+                qf->weights[0] = 5.0 / 18.0;
+                qf->weights[1] = 4.0 / 9.0;
+                qf->weights[2] = 5.0 / 18.0;
+            }
+
             return true; // Now it's "normal" to return...
         }
     }
     return false;
 }
 
-double *partition(double a, double b, int N)
-{
-    double *arr = malloc(sizeof(double)*(N+1)); 
-    for(int i = 0; i <= N; i++)
-    {
-        *(arr+i) = a + i * ( (b-a)/N ); // a_(i) or b_(i-1)
-    }
-    // Now, there is only N+1 elements, you'll need to use
-    // the same number as a and as b
-    return arr;
-}
-
-
-double linearInterpolation(double a, double b, double amount)
-{
-    double len = b - a;
-    return a + (len * amount);
-}
-
 
 double leftMethod(double (*f)(double), double a, double b, int N)
 {
-    double *partition_array = partition(a,b,N);
+    //double *partition_array = partition(a,b,N);
     double res = 0;
     
+    const double dx = ( b - a ) / (double)(N);
+
     for(int i = 0; i < N; i++)
     {
-        res += (*f)(*(partition_array+i)) * (*(partition_array+i+1) - *(partition_array + i));
+        res += (*f)(a + i * dx) * (dx);
     }
     
-    free(partition_array);
+    //free(partition_array);
     return res;
 }
 
@@ -70,15 +78,17 @@ double leftMethod(double (*f)(double), double a, double b, int N)
 
 double rightMethod(double (*f)(double), double a, double b, int N)
 {
-    double *partition_array = partition(a,b,N);
+    //double *partition_array = partition(a,b,N);
     double res = 0;
+
+    const double dx = (b - a) / (double)(N);
     
     for(int i = 0; i < N; i++)
     {
-        res += (*f)(*(partition_array+i+1)) * (*(partition_array+i+1) - *(partition_array + i));
+        res += (*f)(a + (i + 1) * dx) * (dx);
     }
     
-    free(partition_array);
+    //free(partition_array);
     return res;
 }
 
@@ -86,17 +96,19 @@ double rightMethod(double (*f)(double), double a, double b, int N)
 
 double middleMethod(double (*f)(double), double a, double b, int N)
 {
-    double *partition_array = partition(a,b,N);
+    //double *partition_array = partition(a,b,N);
     double res = 0;
     
+    const double dx = (b - a) / (double)(N);
     
     for(int i = 0; i < N; i++)
     {
-        double mid = ( *(partition_array+i) + *(partition_array + i+1) ) / 2;
-        res += (*f)(mid) * (*(partition_array+i+1) - *(partition_array+i));
+        double a_i = a + i * dx;
+        double mid = a_i + dx / 2.0;
+        res += (*f)(mid) * (dx);
     }
     
-    free(partition_array);
+    //free(partition_array);
     return res;
 }
 
@@ -104,101 +116,98 @@ double middleMethod(double (*f)(double), double a, double b, int N)
 
 double trapezesMethod(double (*f)(double), double a, double b, int N)
 {
-    double *partition_array = partition(a,b,N);
+    //double *partition_array = partition(a,b,N);
     double res = 0;
     
+    const double dx = (b - a) / (double)(N);
+
     for(int i = 0; i < N; i++)
     {
-        double fact = 0.5 * ( (*f)(*(partition_array+ i )))
-                    + 0.5 * ( (*f)(*(partition_array+i+1)));
-        res += fact * (*(partition_array+i+1) - *(partition_array + i));
+        double a_i = a + i * dx;
+        double b_i = a_i + dx;
+        double fact = 0.5 * ( (*f)(a_i))
+                    + 0.5 * ( (*f)(b_i));
+        res += fact * (dx);
     }
     
-    free(partition_array);
+    //free(partition_array);
     return res;
 }
 
 // simpson
-double simpsonMethod(double (*f)(double), double a, double b, int N)
+double simpsonMethod(double (*f)(double), double a, double b, int N, QuadFormula* qf)
 {
-    double *partition_array = partition(a,b,N);
+    //double *partition_array = partition(a,b,N);
     double res = 0;
+
+    const double dx = (b - a) / (double)(N);
     
     for(int i = 0; i < N; i++)
     {
-        double mid = (*(partition_array+i) + *(partition_array+i+1))/2;
-        double fact = (double)(1)/(double)(6) * ( (*f)(*(partition_array+ i )) )
-                    + (double)(2)/(double)(3) * ( (*f)(mid) )
-                    + (double)(1)/(double)(6) * ( (*f)(*(partition_array+i+1)) );
-        res += fact * (*(partition_array+i+1) - *(partition_array + i));
+        double a_i = a + i * dx;
+        double mid = a_i + dx / 2.0;
+        double b_i = a_i + dx;
+
+        double fact = qf->weights[0] * ( (*f)(a_i) )
+                    + qf->weights[1] * ( (*f)(mid) )
+                    + qf->weights[2] * ( (*f)(b_i) );
+        res += fact * (dx);
     }
     
-    free(partition_array);
+    //free(partition_array);
     return res;
 }
 
 
 
 // gauss2
-double gaussTwoMethod(double (*f)(double), double a, double b, int N)
+double gaussTwoMethod(double (*f)(double), double a, double b, int N, QuadFormula* qf)
 {
-    double *partition_array = partition(a,b,N);
+    //double *partition_array = partition(a,b,N);
     double res = 0;
-    
+
+    const double dx = (b - a) / (double)(N);
+
     for(int i = 0; i < N; i++)
     {
-        double plus_part = linearInterpolation(
-                    *(partition_array + i),
-                    *(partition_array+i+1),
-                    ( 1 - ( 1/(sqrt(3)) ) ) / 2
-                );
-        double minus_part = linearInterpolation(
-                    *(partition_array + i),
-                    *(partition_array+i+1),
-                    ( 1 + ( 1/(sqrt(3)) ) ) / 2
-                );
+        double a_i = a + i * dx;
 
-        double fact = (0.5) * ( (*f)(plus_part) )
-                    + (0.5) * ( (*f)(minus_part) );
-        res += fact * (*(partition_array+i+1) - *(partition_array + i));
+        double plus_part = a_i + qf->nodes[0] * dx;
+        double minus_part = a_i + qf->nodes[1] * dx;
+
+        double fact = qf->weights[0] * ( (*f)(plus_part) )
+                    + qf->weights[1] * ( (*f)(minus_part) );
+        res += fact * (dx);
     }
-    
-    free(partition_array);
+
+    //free(partition_array);
     return res;
 }
 
 
 // gauss3
-double gaussThreeMethod(double (*f)(double), double a, double b, int N)
+double gaussThreeMethod(double (*f)(double), double a, double b, int N, QuadFormula* qf)
 {
-    double *partition_array = partition(a,b,N);
+    //double *partition_array = partition(a,b,N);
     double res = 0;
-    
+
+    const double dx = (b - a) / (double)(N);
+
     for(int i = 0; i < N; i++)
     {
-        double node1 = linearInterpolation(
-                    *(partition_array + i),
-                    *(partition_array+i+1),
-                    (0.5) * ( 1 - (sqrt( (double)(3)/(double)(5) )) )
-                );
-        double node2 = linearInterpolation(
-                    *(partition_array + i),
-                    *(partition_array+i+1),
-                    0.5
-                );
-        double node3 = linearInterpolation(
-                    *(partition_array + i),
-                    *(partition_array+i+1),
-                    (0.5) * ( 1 + (sqrt( (double)(3)/(double)(5) )) )
-                );
+        double a_i = a + i * dx;
 
-        double fact = ((double)(5)/(double)(18)) * ( (*f)(node1) )
-                    + ((double)(4)/(double)(9)) * ( (*f)(node2) )
-                    + ((double)(5)/(double)(18)) * ( (*f)(node3) );
-        res += fact * (*(partition_array+i+1) - *(partition_array + i));
+        double node1 = a_i + qf->nodes[0] * dx;
+        double node2 = a_i + qf->nodes[1] * dx;
+        double node3 = a_i + qf->nodes[2] * dx;
+
+        double fact = qf->weights[0] * ( (*f)(node1) )
+                    + qf->weights[1] * ( (*f)(node2) )
+                    + qf->weights[2] * ( (*f)(node3) );
+        res += fact * (dx);
     }
     
-    free(partition_array);
+    //free(partition_array);
     return res;
 }
 
@@ -240,14 +249,15 @@ double integrate(double (*f)(double), double a, double b, int N, QuadFormula* qf
         return trapezesMethod(f, a, b, N);
 
     if(!strcmp(qf->name,"simpson"))
-        return simpsonMethod(f, a, b, N);
+        return simpsonMethod(f, a, b, N, qf);
 
     if(!strcmp(qf->name,"gauss2"))
-        return gaussTwoMethod(f, a, b, N);
+        return gaussTwoMethod(f, a, b, N, qf);
 
     if(!strcmp(qf->name,"gauss3"))
-        return gaussThreeMethod(f, a, b, N);
+        return gaussThreeMethod(f, a, b, N, qf);
 
+    return 0.0;
 }
 
 double integrate_dx(double (*f)(double), double a, double b, double dx, QuadFormula* qf)
@@ -272,13 +282,15 @@ double integrate_dx(double (*f)(double), double a, double b, double dx, QuadForm
         return trapezesMethod(f, a, b, N);
 
     if(!strcmp(qf->name,"simpson"))
-        return simpsonMethod(f, a, b, N);
+        return simpsonMethod(f, a, b, N, qf);
 
     if(!strcmp(qf->name,"gauss2"))
-        return gaussTwoMethod(f, a, b, N);
+        return gaussTwoMethod(f, a, b, N, qf);
 
     if(!strcmp(qf->name,"gauss3"))
-        return gaussThreeMethod(f, a, b, N);
+        return gaussThreeMethod(f, a, b, N, qf);
+
+    return 0.0;
 }
 
 
